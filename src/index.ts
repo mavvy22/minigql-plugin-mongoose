@@ -18,16 +18,22 @@ const applyContext =
   };
 
 const createResolverParam = (models: PluginOptions['models']) => {
-  const m = models.reduce(
-    (prev, current) => ({
-      ...prev,
-      [current.name]: () => ({
-        db: mongoose.model(current.name),
+  const m = (input: any) =>
+    models.reduce(
+      (prev, current) => ({
+        ...prev,
+        [current.name]: () => {
+          const db = mongoose.model(current.name);
+
+          return {
+            db,
+            create: async (createInput: any) => db.create(createInput || input),
+          };
+        },
       }),
-    }),
-    {},
-  );
-  return { mongoose, models: m };
+      {},
+    );
+  return ({ input }: any) => ({ mongoose, models: m(input) });
 };
 
 const createPrestart = (models: PluginOptions['models']) => {

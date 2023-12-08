@@ -40,7 +40,7 @@
     ]
   },
   "dependencies": {
-    "@mavvy/mgql": "workspace:^",
-    "mongoose": "6.10.5"
+    "@mavvy/mgql": "^1.0.1",
+    "mongoose": "^8.0.3"
   }
 }
